@@ -1,0 +1,109 @@
+#!/usr/bin/env python
+# coding=utf-8
+# Python使用的是2.7，缩进可以使用tab、4个空格或2个空格，但是只能任选其中一种，不能多种混用
+
+
+# 输入
+# 2 1 1
+# 2 2
+# 2 2
+# 3 3 3
+# 5 4
+# 12 11
+# 9 8
+# 5 10 10
+# 22 23
+# 17 19
+# 13 17
+# 8 12
+# 2 6
+
+
+# 5 13 13
+# 4 4
+# 10 10
+# 7 7
+# 1 1
+# 13 13
+# 4 12 140
+# 172 60
+# 71 95
+# 125 149
+# 53 82
+# 3 500 789
+# 56 32
+# 64 42
+# 74 55
+
+def my_compute(a):
+    line1 = a[0]
+    my_set = []
+    for line2,i in zip(a,range(len(a))):
+        if line1[1]<line2[0] and line1[2]<line2[1]:
+            my_set.append(i)
+    # print 'my_set', my_set
+    shunxu = []
+    while len(my_set)>0:
+        my_set,shunxu = my_recursion(a, my_set, shunxu)
+    print len(shunxu)
+    # print shunxu
+    if len(shunxu)>0:
+        s = ''
+        for i in shunxu:
+            s += str(i) + '\t'
+        print s
+
+
+def my_recursion(a, my_set, shunxu):
+    my_dict = {}
+    for i in my_set:
+        my_dict[i] = []
+        for j in my_set:
+            line1 = a[i]
+            line2 = a[j]
+            if line1[0]<line2[0] and line1[1]<line2[1]:
+                my_dict[i].append(j)
+    # print 'my_dict',my_dict
+    imax = my_set[0]
+    for i in my_set:
+        if my_dict[i]>my_dict[imax]:
+            imax = i
+    # print 'tmax',imax
+    shunxu.append(imax)
+    try:
+        my_set = my_dict[imax]
+    except:
+        my_set = []
+    # print 'my_set',my_set
+    return my_set,shunxu
+
+
+while 1:
+    s = raw_input()
+    # raw_input()里面不要有任何提示信息
+    if s != "":
+        # print len(s)
+        if len(s.split()) == 3:
+            k = 0
+            a = [[]]
+            for x in s.split():
+                a[0].append(int(x))
+            if a[0][1]>a[0][2]:
+                a[0][1],a[0][2] = a[0][2],a[0][1]
+            # print a
+        else:
+            k = k + 1
+            a.append([])
+            for x in s.split():
+                a[k].append(int(x))
+            if a[k][0]>a[k][1]:
+                a[k][0],a[k][1] = a[k][1],a[k][0]
+            if k == a[0][0]:
+                my_compute(a)
+    else:
+        break
+
+
+
+
+
